@@ -14,6 +14,7 @@ define('DB', [
 	'pass'	=> 'root',
 	'db'	=> 'test',
 	'char'	=> 'utf8',
+	'port'	=> '3306',
 ]);
 
 // 默认控制器
