@@ -12,15 +12,24 @@ class Model
 	private $join 		= '';
 	private $fields 	= '*';
 	private $limit		= '';
+	private $order		= '';
+	private $group		= '';
 	private $where 		= array('string'=>'', 'data'=>array());
 	private $data 		= array('string'=>'', 'data'=>array());
+	public $sql 		= '';
 
+	/**
+	* done
+	*/
 	public function __call($methodName, $params)
 	{
 		$this->instance();
 		return $this->$methodName(...$params);
 	}
 
+	/**
+	* done
+	*/
 	public static function __callStatic($methodName, $params)
 	{
 		$mine = new static;
@@ -28,12 +37,35 @@ class Model
 		return $mine->$methodName(...$params);
 	}
 
-	protected function join($join)
+	protected function group($group)
 	{
-		$this->join = $join;
+		$this->group = $group;
 		return $this;
 	}
 
+	/**
+	* @param strnig $order eg : $order = 'id desc, date asc';
+	* done
+	*/
+	protected function order($order)
+	{
+		$this->order = $order;
+		return $this;
+	}
+
+	/**
+	* @param string $join eg : $join = 'LEFT JOIN action b ON a.action_id = b.id';
+	* done
+	*/
+	protected function join($join)
+	{
+		$this->join .= $join;
+		return $this;
+	}
+
+	/**
+	* done
+	*/
 	protected function alias($as)
 	{
 		$this->alias = $as;
@@ -44,18 +76,29 @@ class Model
 	 * select from 
 	 * done
 	 */	
-	protected function select()
+	protected function select($isExec = true)
 	{
 		$sql = 'SELECT ' . $this->fields . ' FROM ' . $this->table . ' ' . $this->alias . ' ';
 
 		if ($this->join != '') {
-			$sql .= $this->join;
+			$sql .= $this->join . ' ';
 		}
 		if ($this->where['string'] != '') {
 			$sql .= 'WHERE ' . $this->where['string'] . ' ';
 		}
+		if ($this->group != '') {
+			$sql .= 'GROUP BY ' . $this->group . ' ';
+		}
+		if ($this->order != '') {
+			$sql .= 'ORDER BY ' . $this->order . ' ';
+		}
 		if ($this->limit != '') {
 			$sql .= $limit;
+		}
+
+		$this->sql = $sql;
+		if (!$isExec){
+			return $this->sql; // 只返回 SQL 语句
 		}
 
 		return $this->pdo->select($sql, array($this->where['data']));
