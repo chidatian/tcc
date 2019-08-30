@@ -62,4 +62,27 @@ class HttpUtil
         curl_close ( $ch );
         return $ret;
     }
+    public function curl($url, $data, $method = 'GET')
+    {
+        $ch = curl_init();
+    
+        curl_setopt($ch, CURLOPT_URL, $url);
+        $method = strtoupper($method);
+        if ($method == 'POST') {
+            curl_setopt($ch, CURLOPT_POST, true);
+        } elseif (in_array($method, array('PUT', 'DELETE'))) {
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method); 
+        }
+        if ($method != 'GET' && !empty($data)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json'));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 200 );
+        $result = curl_exec($ch);
+
+        curl_close($ch);
+    
+        return $result;
+    }
 }
