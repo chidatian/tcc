@@ -43,10 +43,14 @@ class Driver
 
     public function update($sql)
     {
-        if ( $res = $this->link->exec($sql) ) {
-            return $res;
+        $res = $this->link->exec($sql)
+        if ( $res === false ) {
+            $err = $this->link->errorInfo();
+            if ($err[0] === '00000' || $err[0] === '01000') {
+                return true;
+            }
         }
-        return false;
+        return $res;
     }
     /**
      * 查询多条
