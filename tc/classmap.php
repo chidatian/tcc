@@ -5,4 +5,5 @@ return array(
 	'Tc\App'    	=> __DIR__.'/core/App.php',
 	'Tc\Di'    		=> __DIR__.'/core/Di.php',
 	'Tc\Config'    	=> __DIR__.'/core/Config.php',
+	'Tc\Lib\Request'    	=> __DIR__.'/lib/Request.php',
 );

@@ -10,10 +10,12 @@ class App {
 	}
 
 	public function __get($name) {
-		echo $name;
+		if ( $obj = $this->di->get($name) ) {
+			return $obj;
+		}
 	}
 
 	public function run() {
-		echo $this->request->controller();
+		var_dump( $this->request->controller());
 	}
 }
