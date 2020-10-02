@@ -1,7 +1,8 @@
 <?php
 
-require './core/Loader.php';
-$classmap = include './classmap.php';
+$classmap = include __DIR__.'/classmap.php';
+require __DIR__.'/core/Loader.php';
+
 $loader = new \Tc\Loader($classmap);
 
 //
