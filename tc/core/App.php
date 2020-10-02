@@ -2,20 +2,30 @@
 
 namespace Tc;
 
-class App {
-	protected $di = null;
+use Tc\Di;
 
+class App {
 	public function __construct($di) {
-		$this->di = $di;
+		Di::setDi($di);
 	}
 
 	public function __get($name) {
-		if ( $obj = $this->di->get($name) ) {
+		if ( $obj = Di::getDi()->call($name) ) {
 			return $obj;
 		}
 	}
 
 	public function run() {
-		var_dump( $this->request->controller());
+		if ( $request = $this->request ) {
+			$c = $request->controller();
+			$a = $request->action();
+			if ( $router = $this->router ) {
+				if ( false === $c = $router->match($request->route(), $request->method()) ) {
+					return 'error: router';
+				}
+			}
+			return call_user_func([new $c, $a]);
+		}
+		return null;
 	}
 }

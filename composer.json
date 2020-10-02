@@ -1,0 +1,10 @@
+{
+    "name": "tcc",
+    "description": "version 1",
+
+    "require": {
+        "monolog/monolog": "1.0.*",
+        "phpoffice/phpexcel": "1.8.2",
+        "smarty/smarty": "~3.1"
+    }
+}

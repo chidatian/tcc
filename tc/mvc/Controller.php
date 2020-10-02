@@ -2,10 +2,16 @@
 
 namespace Tc\Mvc;
 
-class Controller {
-	protected $di = null;
+use Tc\Di;
 
-	public function __construct($di) {
-		$this->di = $di;
+class Controller {
+	public function __construct() {
+
+	}
+
+	public function __get($name) {
+		if ( $obj = Di::getDi()->call($name) ) {
+			return $obj;
+		}
 	}
 }
