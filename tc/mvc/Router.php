@@ -1,6 +1,6 @@
 <?php
 
-namespace Tc\Http;
+namespace Tc\Mvc;
 
 class Router {
     protected $_routes  = array();

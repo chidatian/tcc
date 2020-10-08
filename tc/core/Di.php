@@ -66,4 +66,8 @@ class Di {
 			self::$_di = $di;
 		}
 	}
+
+	public function __destruct() {
+		self::$_di = null;
+	}
 }

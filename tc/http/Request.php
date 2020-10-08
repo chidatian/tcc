@@ -54,7 +54,7 @@ class Request {
 	}
 	
 	protected function setController($c) {
-		$this->_controller = ucfirst($c).'Controller';
+		$this->_controller = empty($c) ? '' : ucfirst($c).'Controller';
 	}
 
 	public function controller() {

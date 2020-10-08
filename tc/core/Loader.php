@@ -7,8 +7,8 @@ class Loader {
 	protected $_dirs 	 	 = array();
 	protected $_namespaces 	 = array();
 
-	public function __construct($classmap) {
-		$this->_classmap = $classmap;
+	public function __construct() {
+		$this->_classmap = include dirname(__DIR__).'/classmap.php';
 		spl_autoload_register([$this, '_tc_loader']);
 	}
 
