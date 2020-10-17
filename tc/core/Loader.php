@@ -47,6 +47,8 @@ class Loader {
 	 * 类名与文件名一样 注意大小写
 	 */
 	protected function _dirs_loader($class) {
+		$class = '\\'.$class;
+		$class = substr($class, strrpos($class, '\\')+1);
 		foreach ( $this->_dirs as $dir) {
 			$filename = $dir . $class . '.php';
 			if ( file_exists($filename)) {

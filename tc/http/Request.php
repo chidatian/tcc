@@ -40,12 +40,9 @@ class Request {
 			}
 		}
 		$this->setRoute($info);
-		$this->setAction(array_pop($info));
-		$this->setController(array_pop($info));
-		$this->setModule(array_pop($info));
 	}
 
-	protected function setModule($m) {
+	public function setModule($m) {
 		$this->_module = $m;
 	}
 
@@ -53,15 +50,15 @@ class Request {
 		return $this->_module;
 	}
 	
-	protected function setController($c) {
-		$this->_controller = empty($c) ? '' : ucfirst($c).'Controller';
+	public function setController($c) {
+		$this->_controller = $c; 
 	}
 
 	public function controller() {
 		return $this->_controller;
 	}
 
-	protected function setAction($a) {
+	public function setAction($a) {
 		$this->_action = $a;
 	}
 

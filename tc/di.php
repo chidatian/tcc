@@ -19,17 +19,26 @@ $di->setShare('config', function(){
 			'user' => 'root'
 		],
 		'session' => [
-			'type' => 'redis'
+			'switch' => true,
+			'type'   => 'redis',
+
 		]
 	]);
 });
 
 $di->setShare('router', function() {
 	$router = new Router();
-	$router->get('/admin/tc/index', '\App\Admin\Controller\TcController@index');
-	$router->get('/admin/tc/sess', '\App\Admin\Controller\TcController@sess');
-	$router->get('/index/index', '\IndexController@index');
-	$router->get('/index/config', '\IndexController@config');
+	// $router->get('/admin/tc/index', '\App\Admin\Controller\TcController@index');
+	// $router->get('/admin/tc/sess', '\App\Admin\Controller\TcController@sess');
+	// $router->get('/index/index', '\IndexController@index');
+	// $router->get('/index/config', '\IndexController@config');
+	$router->group(['prefix' => '/admin', 'namespace' => '\App\Admin'], function() use ($router){
+		$router->group(['prefix' => '/tc', 'namespace' => '\Controller'], function() use ($router){
+			$router->match('/index', '\TcController@index',['get','post']);
+		});
+	});
+	// $router->match();
+	// echo '<pre>';var_dump($router);die;
 	return $router;
 });
 
