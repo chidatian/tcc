@@ -38,22 +38,26 @@ class App {
 	}
 
 	public function run() {
+
 		$request  = $this->request;
 		$response = $this->response;
+
 		$this->session->start();
-		$c = $request->controller();
-		$a = $request->action();
-		if ( $router = $this->router ) {
-			if ( false === $c = $router->match($request->route(), $request->method()) ) {
-				throw new E('[ error : router ]');
-				return $response;
-			}
+		
+		if ( !$this->router || false === $routes = $this->router->validate(
+			$request->route(), 
+			$request->method()
+		) ) {
+
+			throw new E('[ error : router ]');
 		}
-		if ( empty($c) || empty($a)) {
-			throw new E('[ empty: controller or action ]');
-			return $response;
+		else {
+			$request->setController($routes['controller']);
+			$request->setAction($routes['action']);
+	
+			call_user_func([new $routes['controller'], $routes['action']]);
 		}
-		call_user_func([new $c, $a]);
+
 		return $response;
 	}
 }
