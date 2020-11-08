@@ -10,7 +10,7 @@ class Controller {
 	}
 
 	public function __get($name) {
-		if ( $obj = Di::getDi()->call($name) ) {
+		if ( $obj = Di::instance()->call($name) ) {
 			return $obj;
 		}
 	}

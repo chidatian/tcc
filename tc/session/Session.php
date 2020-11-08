@@ -3,6 +3,8 @@
 namespace Tc;
 
 class Session {
+    protected $_savePath = 'E:\www\test\tcc\public\sess';
+
     public function __construct($obj = null) {
         if ( !$obj instanceof \SessionHandlerInterface ) {
             $obj = new \Tc\Session\FileSessionHandler;
@@ -12,7 +14,7 @@ class Session {
 
     public function start() {
         if (session_status() != PHP_SESSION_ACTIVE) {
-            session_save_path('E:\www\test\tcc\public\sess');
+            session_save_path($this->_savePath);
             session_start();
         }
         if ( isset($_SESSION['create_time']) ) {
@@ -26,6 +28,10 @@ class Session {
         $_SESSION['create_time'] = time();
         $this->_commit();
         return true;
+    }
+
+    public function setSavePath($path) {
+        $this->_savePath = $path;
     }
 
     public function set($key, $value) {

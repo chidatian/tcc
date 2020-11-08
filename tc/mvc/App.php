@@ -28,11 +28,10 @@ class App {
 		$di->setShare('cookie', function() {
 			return new Cookie();
 		});
-		Di::setDi($di);
 	}
 
 	public function __get($name) {
-		if ( $obj = Di::getDi()->call($name) ) {
+		if ( $obj = Di::instance()->call($name) ) {
 			return $obj;
 		}
 	}

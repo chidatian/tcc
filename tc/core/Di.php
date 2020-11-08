@@ -3,8 +3,15 @@
 namespace Tc;
 
 class Di {
-	protected static $_di 		= null;
+	protected static $_instance 	= null;
 	protected $_services		= array();
+
+	public static function instance() {
+		if ( self::$_instance === null) {
+			self::$_instance = new self;
+		}
+		return self::$_instance;
+	}
 
 	public function call($name) {
 		if ( !isset($this->_services[$name]) ) {
@@ -17,11 +24,7 @@ class Di {
 	}
 
 	public function set($name, $closure) {
-		$this->_services[$name] = array(
-			'closure' 		=> $closure,
-			'isShare' 		=> false,
-			'instanceShare' => null
-		);
+		$this->_setServices($name, $closure, false, null);
 	}
 
 	public function get($name) {
@@ -29,15 +32,19 @@ class Di {
 	}
 
 	public function setShare($name, $closure) {
-		$this->_services[$name] = array(
-			'closure' 		=> $closure,
-			'isShare' 		=> true,
-			'instanceShare' => null
-		);
+		$this->_setServices($name, $closure, true, null);
 	}
 
 	public function getShare($name) {
 		return $this->_getShare($name);
+	}
+
+	protected function _setServices($name, $closure, $isShare, $instanceShare) {
+		$this->_services[$name] = array(
+			'closure' 		=> $closure,
+			'isShare' 		=> $isShare,
+			'instanceShare' => $instanceShare
+		);
 	}
 
 	protected function _get($name) {
@@ -52,22 +59,16 @@ class Di {
 			return $this->_services[$name]['instanceShare'];
 		}
 		if ( is_callable($this->_services[$name]['closure']) ) {
-			return $this->_services[$name]['instanceShare'] = ($this->_services[$name]['closure'])();
+			return $this->_services[$name]['instanceShare'] = call_user_func($this->_services[$name]['closure']);
 		}
 		return $this->_services[$name]['closure'];
 	}
 
-	public static function getDi() {
-		return self::$_di;
-	}
+	protected function __clone() {}
 
-	public static function setDi($di) {
-		if ( self::$_di === null) {
-			self::$_di = $di;
-		}
-	}
+    protected function __construct() {}
 
 	public function __destruct() {
-		self::$_di = null;
+		self::$_instance = null;
 	}
 }

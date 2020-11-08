@@ -8,6 +8,9 @@ return array(
 	'\Tc\Di'    	=> __DIR__.'/core/Di.php',
 	'\Tc\E'    		=> __DIR__.'/core/E.php',
 	'\Tc\Loader' 	=> __DIR__.'/core/Loader.php',
+	// db
+	'\Tc\Db\Mysql' 	=> __DIR__.'/db/mysql/Mysql.php',
+	'\Tc\Db\Mysql\Mpdo' 	=> __DIR__.'/db/mysql/Mpdo.php',
 	// mvc
 	'\Tc\Mvc\App'    		=> __DIR__.'/mvc/App.php',
 	'\Tc\Mvc\Router'    	=> __DIR__.'/mvc/Router.php',
