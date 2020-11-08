@@ -12,14 +12,31 @@ class Mysql
 
     public function __construct($config) {
         $this->mpdo = new Mpdo($config);
-    }
+	}
 
-    public function prepare($sql,$bind) {
+	/**
+	 * 原生sql
+	 */
+	public function query($sql,$bind=[]) {
+		if ( empty($bind)) {
+            return $this->mpdo->select($sql);
+		}
+
+		else {
+			return $this->prepareQuery($sql, $bind);
+		}
+	}
+
+    protected function prepareQuery($sql,$bind) {
         
         $this->stmt = $this->mpdo->prepare($sql);
-        $this->stmt->execute($bind);
+		$this->stmt->execute($bind);
+        return $this->stmt->fetchAll(2);
     }
 
+	/**
+	 * 获取一条
+	 */
     public function findFirst($table, $map) {
         $this->_setQuerySql($table, $map);
         $this->_sql .= ' LIMIT 1 ';
@@ -27,18 +44,19 @@ class Mysql
         if ( empty($map['bind'])) {
             return $this->mpdo->findFirst($this->_sql);
         }
-        $this->prepare($this->_sql, $map['bind']);
-        return $this->stmt->fetch(2);
+        return $this->prepareQuery($this->_sql, $map['bind']);
     }
-    
+	
+	/**
+	 * 获取多条
+	 */
     public function find($table, $map) {
         $this->_setQuerySql($table, $map);
 
         if ( empty($map['bind'])) {
             return $this->mpdo->select($this->_sql);
         }
-        $this->prepare($this->_sql, $map['bind']);
-        return $this->stmt->fetchAll(2);
+        return $this->prepareQuery($this->_sql, $map['bind']);
 	}
 	
     public function create($table, $map) {

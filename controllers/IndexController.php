@@ -5,12 +5,11 @@ use Tc\Mvc\Controller;
 class IndexController extends Controller {
     public function index() {
         $get = $this->request->get();
-        var_dump($get);die;
         $map = [
-            'columns' => 'id',
+            'columns' => 'id,user',
             'conditions' => 'id = :id',
             'bind' => [
-                'id' => 2
+                'id' => 3
             ]
         ];
         /* (new Members)->update([
@@ -19,8 +18,8 @@ class IndexController extends Controller {
             'id' => 4
         ]); */
 
-        // $res = Members::findFirst($map);
-        $res = (new Members)->findFirst($map);
+        $res = Members::find($map);
+        // $res = (new Members)->findFirst($map);
         $this->response->json($res);
     }
 

@@ -3,6 +3,7 @@
 namespace Tc\Db\Mysql;
 
 use PDO;
+use Exception;
 
 class Mpdo {
     protected $link = null;
