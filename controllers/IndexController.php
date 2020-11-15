@@ -1,26 +1,39 @@
 <?php
 
 use Tc\Mvc\Controller;
+use Tc\Lib\Page;
 
 class IndexController extends Controller {
     public function index() {
-        $get = $this->request->get();
+        $p = $this->request->get('p');
+        $page = new Page($p,10);
         $map = [
             'columns' => 'id,user',
-            'conditions' => 'id = :id',
-            'bind' => [
-                'id' => 3
-            ]
+            'conditions' => 'id > 0',
+            // 'bind' => [
+            //     'id' => 0
+            // ],
+            // 'bindTypes' => [
+            //     'id' => 0,
+            // ],
+            'group' => '',
+            'order' => 'user',
+            'limit' => $page->limit(),
         ];
         /* (new Members)->update([
             'user' => 'ddd edit'
         ],[
             'id' => 4
         ]); */
-
         $res = Members::find($map);
+        echo '<pre>';
+        foreach ($res as $item) {
+            var_dump($item);
+        }
+        die;
         // $res = (new Members)->findFirst($map);
-        $this->response->json($res);
+        $ret = $page->format($res->toArray(),97);
+        $this->response->successJson($ret);
     }
 
     public function config() {

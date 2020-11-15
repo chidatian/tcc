@@ -4,6 +4,9 @@ namespace Tc\Db;
 
 use Tc\Db\Mysql\Mpdo;
 
+/**
+ * orm
+ */
 class Mysql
 {
     protected $mpdo = null;
@@ -72,18 +75,30 @@ class Mysql
 	}
 
     private function _setQuerySql($table, $map) {
-        $this->_sql = 'SELECT';
+        $this->_sql = 'SELECT ';
         
-		if ( isset($map['columns'])) {
-			$this->_sql .= ' '.$map['columns'].' ';
+		if ( isset($map['columns']) && !empty($map['columns'])) {
+			$this->_sql .= $map['columns'];
 		} else {
 			$this->_sql .= ' * ';
 		}
 		
-        $this->_sql .= ' FROM '.$table.' ';
+        $this->_sql .= ' FROM '.$table;
         
 		if ( isset($map['conditions']) && !empty($map['conditions'])) {
-            $this->_sql .= ' WHERE '.$map['conditions'].' ';
+            $this->_sql .= ' WHERE '.$map['conditions'];
+		}
+
+		if ( isset($map['group']) && !empty($map['group'])) {
+			$this->_sql .= ' GROUP BY '.$map['group'];
+		}
+
+		if ( isset($map['order']) && !empty($map['order'])) {
+			$this->_sql .= ' ORDER BY '.$map['order'];
+		}
+
+		if ( isset($map['limit']) && !empty($map['limit'])) {
+			$this->_sql .= ' LIMIT '.$map['limit'];
 		}
 	}
 

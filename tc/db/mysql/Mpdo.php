@@ -51,7 +51,7 @@ class Mpdo {
     {
         $result = $this->query($sql);
 
-        return $result->fetchAll(PDO::FETCH_ASSOC);
+        return new MysqlResult($result);
     }
     /**
      * 查询一条
@@ -101,4 +101,43 @@ class Mpdo {
     {
         return $this->link->beginTransaction();
     }
+}
+
+class MysqlResult implements \Iterator {
+	protected $array = [];
+	protected $position = null;
+	/* 方法 */
+	// abstract public current ( ) : mixed
+	public function current ( ) {
+		return $this->array[$this->position];
+	}
+	// abstract public key ( ) : scalar
+	public function key ( ) {
+		return $this->position;
+	}
+	// abstract public next ( ) : void
+	public function next ( ) {
+		$this->position++;
+	}
+	// abstract public rewind ( ) : void
+	public function rewind ( ) {
+		$this->position = 0;
+	}
+	// abstract public valid ( ) : bool
+	public function valid ( ) {
+		return isset($this->array[$this->position]);
+	}
+
+	public function __construct($result)
+	{
+        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+            $this->array[] = $row;
+        }
+        $this->rewind();
+		// $this->array = $result->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	public function toArray() {
+		return $this->array;
+	}
 }

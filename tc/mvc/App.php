@@ -41,6 +41,7 @@ class App {
 		$request  = $this->request;
 		$response = $this->response;
 
+		$response->obStart();
 		$this->session->start();
 		
 		if ( !$this->router || false === $routes = $this->router->validate(

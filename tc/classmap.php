@@ -25,4 +25,6 @@ return array(
 	'\Tc\Session' 						=> __DIR__.'/session/Session.php',
 	'\Tc\Session\FileSessionHandler' 	=> __DIR__.'/session/FileSessionHandler.php',
 	'\Tc\Session\RedisSessionHandler' 	=> __DIR__.'/session/RedisSessionHandler.php',
+	// lib
+	'\Tc\Lib\Page' 	=> __DIR__.'/lib/Page.php',
 );

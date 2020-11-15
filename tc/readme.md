@@ -47,7 +47,10 @@ class Members extends Model {
         'conditions' => 'id = :id',
         'bind' => [
             'id' => 2
-        ]
+        ],
+        'group' => '',
+        'order' => 'user',
+        'limit' => $page->limit(),
     ]);
 ```
 
