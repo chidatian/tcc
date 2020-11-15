@@ -2,6 +2,7 @@
 
 namespace Tc\Db\Mysql;
 
+use ArrayIterator;
 use PDO;
 use Exception;
 

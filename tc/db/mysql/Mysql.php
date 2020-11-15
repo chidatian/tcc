@@ -54,8 +54,11 @@ class Mysql
 	 * 获取多条
 	 */
     public function find($table, $map) {
-        $this->_setQuerySql($table, $map);
-
+		$this->_setQuerySql($table, $map);
+		
+		if ( isset($map['limit']) && !empty($map['limit'])) {
+			$this->_sql .= ' LIMIT '.$map['limit'];
+		}
         if ( empty($map['bind'])) {
             return $this->mpdo->select($this->_sql);
         }
@@ -95,10 +98,6 @@ class Mysql
 
 		if ( isset($map['order']) && !empty($map['order'])) {
 			$this->_sql .= ' ORDER BY '.$map['order'];
-		}
-
-		if ( isset($map['limit']) && !empty($map['limit'])) {
-			$this->_sql .= ' LIMIT '.$map['limit'];
 		}
 	}
 

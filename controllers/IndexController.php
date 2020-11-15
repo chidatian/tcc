@@ -26,13 +26,9 @@ class IndexController extends Controller {
             'id' => 4
         ]); */
         $res = Members::find($map);
-        echo '<pre>';
-        foreach ($res as $item) {
-            var_dump($item);
-        }
-        die;
         // $res = (new Members)->findFirst($map);
-        $ret = $page->format($res->toArray(),97);
+        var_dump($res);die;
+        $ret = $page->format($res,97);
         $this->response->successJson($ret);
     }
 
