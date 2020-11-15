@@ -9,15 +9,15 @@ class IndexController extends Controller {
         $page = new Page($p,10);
         $map = [
             'columns' => 'id,user',
-            'conditions' => 'id > 0',
-            // 'bind' => [
-            //     'id' => 0
-            // ],
+            'conditions' => 'id > :id',
+            'bind' => [
+                'id' => 0
+            ],
             // 'bindTypes' => [
             //     'id' => 0,
             // ],
             'group' => '',
-            'order' => 'user',
+            'order' => 'id',
             'limit' => $page->limit(),
         ];
         /* (new Members)->update([
@@ -25,9 +25,12 @@ class IndexController extends Controller {
         ],[
             'id' => 4
         ]); */
-        $res = Members::find($map);
-        // $res = (new Members)->findFirst($map);
-        var_dump($res);die;
+        // $res = Members::find($map);
+        $res = (new Members)->findFirst($map);
+        foreach($res as $k => $item) {
+            var_dump($item);
+        }
+        echo '<pre>';var_dump(count($res), $res);die;
         $ret = $page->format($res,97);
         $this->response->successJson($ret);
     }

@@ -2,7 +2,6 @@
 
 namespace Tc\Db\Mysql;
 
-use ArrayIterator;
 use PDO;
 use Exception;
 
@@ -52,7 +51,7 @@ class Mpdo {
     {
         $result = $this->query($sql);
 
-        return new MysqlResult($result);
+        return new MysqlResult($result, 0);
     }
     /**
      * 查询一条
@@ -61,7 +60,7 @@ class Mpdo {
     {
         $result = $this->query($sql);
         
-        return $result->fetch(PDO::FETCH_ASSOC);
+        return new MysqlResult($result, 1);
     }
 
     protected function query($sql)
@@ -104,7 +103,7 @@ class Mpdo {
     }
 }
 
-class MysqlResult implements \Iterator {
+class MysqlResult implements \Iterator, \Countable, \ArrayAccess {
 	protected $array = [];
 	protected $position = null;
 	/* 方法 */
@@ -127,11 +126,42 @@ class MysqlResult implements \Iterator {
 	// abstract public valid ( ) : bool
 	public function valid ( ) {
 		return isset($this->array[$this->position]);
-	}
+    }
+    /* 方法 */
+    // abstract public count ( ) : int
+    public function count ( ) {
+        return count($this->array);
+    }
+    /* 方法 */
+    // abstract public offsetExists ( mixed $offset ) : boolean
+    public function offsetExists ( $offset ) {
+        return isset($this->array[$offset]);
+    }
+    // abstract public offsetGet ( mixed $offset ) : mixed
+    public function offsetGet ( $offset ) {
+        return isset($this->array[$offset]) ? $this->array[$offset] : null;
+    }
+    // abstract public offsetSet ( mixed $offset , mixed $value ) : void
+    public function offsetSet ( $offset , $value ) {
+        if (is_null($offset)) {
+            $this->array[] = $value;
+        } else {
+            $this->array[$offset] = $value;
+        }
+    }
+    // abstract public offsetUnset ( mixed $offset ) : void
+    public function offsetUnset ( $offset ) {
+        unset($this->array[$offset]);
+    }
 
-	public function __construct($result)
+	public function __construct($result, $isSingleRow = 0)
 	{
-        while($row = $result->fetch(PDO::FETCH_ASSOC)) {
+        if ( $isSingleRow) {
+            $this->array = $result->fetch(PDO::FETCH_ASSOC);
+            // $result->closeCursor();
+        }
+
+        else while($row = $result->fetch(PDO::FETCH_ASSOC)) {
             $this->array[] = $row;
         }
         $this->rewind();

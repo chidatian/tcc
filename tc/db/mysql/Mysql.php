@@ -3,6 +3,7 @@
 namespace Tc\Db;
 
 use Tc\Db\Mysql\Mpdo;
+use Tc\Db\Mysql\MysqlResult;
 
 /**
  * orm
@@ -15,6 +16,10 @@ class Mysql
 
     public function __construct($config) {
         $this->mpdo = new Mpdo($config);
+	}
+
+    public function prepare($sql) {
+        return $this->mpdo->prepare($sql);
 	}
 
 	/**
@@ -32,9 +37,10 @@ class Mysql
 
     protected function prepareQuery($sql,$bind) {
         
-        $this->stmt = $this->mpdo->prepare($sql);
-		$this->stmt->execute($bind);
-        return $this->stmt->fetchAll(2);
+        $stmt = $this->prepare($sql);
+		$stmt->execute($bind);
+		return (new MysqlResult($stmt));
+        // return $stmt->fetchAll(2);
     }
 
 	/**
