@@ -3,7 +3,7 @@
 namespace Tc\Lib;
 
 class Page {
-    public $offset = 0;
+    protected $offset = 0;
 
     public function __construct($page=1, $pageSize=20) {
         $page       = intval($page);
@@ -30,13 +30,14 @@ class Page {
     }
 
     public function format($data, $total) {
-        if ($total <= 0) {
-            return $data;
-        }
-
+        
         return array(
             'data' => $data,
             'page' => $this->page($total)
         );
+    }
+
+    public function __get($var) {
+        return isset($this->$var) ? $this->$var : null;
     }
 }
