@@ -3,7 +3,10 @@
 namespace Tc\Lib;
 
 class Pagination {
-    protected $offset = 0;
+    protected $offset   = 0;
+    protected $limit    = 0;
+    protected $page     = 0;
+    protected $pageSize = 0;
 
     public function __construct($page=1, $pageSize=20) {
         $page       = intval($page);
