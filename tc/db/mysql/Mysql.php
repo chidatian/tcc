@@ -3,7 +3,7 @@
 namespace Tc\Db;
 
 use Tc\Db\Mysql\Mpdo;
-use Tc\Db\Mysql\MysqlResult;
+use Tc\Db\Mysql\Mresult;
 
 /**
  * orm
@@ -27,7 +27,8 @@ class Mysql
 	 */
 	public function query($sql,$bind=[]) {
 		if ( empty($bind)) {
-            return $this->mpdo->select($sql);
+			$stmt = $this->mpdo->query($sql);
+			return (new Mresult($stmt));
 		}
 
 		else {
@@ -35,11 +36,11 @@ class Mysql
 		}
 	}
 
-    protected function prepareQuery($sql,$bind) {
+    public function prepareQuery($sql,$bind) {
         
         $stmt = $this->prepare($sql);
 		$stmt->execute($bind);
-		return (new MysqlResult($stmt));
+		return (new Mresult($stmt));
         // return $stmt->fetchAll(2);
     }
 
@@ -51,7 +52,8 @@ class Mysql
         $this->_sql .= ' LIMIT 1 ';
 
         if ( empty($map['bind'])) {
-            return $this->mpdo->findFirst($this->_sql);
+			$stmt = $this->query($this->_sql);
+			return (new Mresult($stmt, true));
         }
         return $this->prepareQuery($this->_sql, $map['bind']);
     }
@@ -66,17 +68,22 @@ class Mysql
 			$this->_sql .= ' LIMIT '.$map['limit'];
 		}
         if ( empty($map['bind'])) {
-            return $this->mpdo->select($this->_sql);
+            return $this->query($this->_sql);
         }
         return $this->prepareQuery($this->_sql, $map['bind']);
 	}
 	
     public function create($table, $map) {
-		
+		$this->_setInsertSql($table, $map);
+
+		return $this->mpdo->insert($this->_sql);
 	}
 
     public function update($table, $map) {
+		$where = $map['conditions'] ?? [];
+		$this->_setModifySql($table, $map['data'], $where);
 
+		return $this->mpdo->update($this->_sql);
 	}
 
     public function save($table, $map) {
@@ -131,12 +138,14 @@ class Mysql
 		}
 		$this->_sql .= implode(',',$map);
 		
-		$map = [];
-		foreach ($where as $k => $v) {
-			$v = is_string($v) ? '"'.$v.'"' : $v;
-			$map[] = $k.' = '.$v;
+		if ( !empty($where)) {
+			$map = [];
+			foreach ($where as $k => $v) {
+				$v = is_string($v) ? '"'.$v.'"' : $v;
+				$map[] = $k.' = '.$v;
+			}
+			$this->_sql .= ' WHERE ';
+			$this->_sql .= implode(' AND ', $map);
 		}
-		$this->_sql .= ' WHERE ';
-		$this->_sql .= implode(' AND ', $map);
 	}
 }

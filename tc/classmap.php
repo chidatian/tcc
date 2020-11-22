@@ -11,6 +11,7 @@ return array(
 	// db
 	'\Tc\Db\Mysql' 	=> __DIR__.'/db/mysql/Mysql.php',
 	'\Tc\Db\Mysql\Mpdo' 	=> __DIR__.'/db/mysql/Mpdo.php',
+	'\Tc\Db\Mysql\Mresult' 	=> __DIR__.'/db/mysql/Mresult.php',
 	// mvc
 	'\Tc\Mvc\App'    		=> __DIR__.'/mvc/App.php',
 	'\Tc\Mvc\Router'    	=> __DIR__.'/mvc/Router.php',
