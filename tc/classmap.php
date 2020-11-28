@@ -4,12 +4,18 @@
  */
 return array(
 	// core
-	'\Tc\Config'    => __DIR__.'/core/Config.php',
-	'\Tc\Di'    	=> __DIR__.'/core/Di.php',
-	'\Tc\E'    		=> __DIR__.'/core/E.php',
-	'\Tc\Loader' 	=> __DIR__.'/core/Loader.php',
+	'\Tc\Config'    	=> __DIR__.'/core/Config.php',
+	'\Tc\Di'    		=> __DIR__.'/core/Di.php',
+	'\Tc\ErrInterface'	=> __DIR__.'/core/ErrInterface.php',
+	'\Tc\Loader' 		=> __DIR__.'/core/Loader.php',
+	// error
+	'\Tc\Err'			=> __DIR__.'/err/Err.php',
+	'\Tc\Err\ErrCode'	=> __DIR__.'/err/ErrCode.php',
+	'\Tc\Err\ErrHandler'=> __DIR__.'/err/ErrHandler.php',
+	'\Tc\Err\SystemErr'	=> __DIR__.'/err/SystemErr.php',
+
 	// db
-	'\Tc\Db\Mysql' 	=> __DIR__.'/db/mysql/Mysql.php',
+	'\Tc\Db\Mysql' 			=> __DIR__.'/db/mysql/Mysql.php',
 	'\Tc\Db\Mysql\Mpdo' 	=> __DIR__.'/db/mysql/Mpdo.php',
 	'\Tc\Db\Mysql\Mresult' 	=> __DIR__.'/db/mysql/Mresult.php',
 	// mvc

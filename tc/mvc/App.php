@@ -44,18 +44,20 @@ class App {
 		$response->obStart();
 		$this->session->start();
 		
-		if ( !$this->router || false === $routes = $this->router->validate(
-			$request->route(), 
-			$request->method()
-		) ) {
-
-			throw new E('[ error : router ]');
-		}
-		else {
+		// 使用 路由
+		if ( $this->router && 
+			false !== $routes = $this->router->validate($request->route(), $request->method()) 
+		) {
 			$request->setController($routes['controller']);
 			$request->setAction($routes['action']);
 	
 			call_user_func([new $routes['controller'], $routes['action']]);
+		}
+		// 不使用 路由
+		else {
+			$c = $request->controller();
+			$a = $request->action();
+			call_user_func([new $c, $a]);
 		}
 
 		return $response;

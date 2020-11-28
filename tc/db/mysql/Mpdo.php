@@ -32,10 +32,15 @@ class Mpdo {
     public function insert($sql)
     {
         if ( $this->link->exec($sql) ) {
-            return $this->link->lastInsertId();
+            return $this->lastInsertId();
         }
         return false;
     }
+    public function lastInsertId()
+    {
+        return $this->link->lastInsertId();
+    }
+
 
     public function update($sql)
     {
@@ -55,6 +60,11 @@ class Mpdo {
         if ( $this->link->errorCode() ) {
             throw new Exception(implode(',', $this->link->errorInfo()));
         }
+    }
+
+    public function delete($sql)
+    {
+        
     }
     /**
      * 预处理

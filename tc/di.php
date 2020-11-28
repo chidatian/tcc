@@ -35,7 +35,7 @@ $di->setShare('router', function() {
 	// $router->get('/admin/tc/sess', '\App\Admin\Controller\TcController@sess');
 	$router->get('/index/index', '\IndexController@index');
 	$router->get('/index/mysql', '\IndexController@mysql');
-	// $router->get('/index/config', '\IndexController@config');
+	$router->get('/index/config', '\IndexController@config');
 	$router->group(['prefix' => '/admin', 'namespace' => '\App\Admin'], function() use ($router){
 		$router->group(['prefix' => '/tc', 'namespace' => '\Controller'], function() use ($router){
 			$router->match('/index', '\TcController@index',['get','post']);

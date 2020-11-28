@@ -18,27 +18,30 @@ class Response {
         $this->obEndFlush();
     }
     
-    public function json() {
+    public function setJsonHeader() {
         header('content-type:application/json');
     }
 
     public function successJson($result = []) {
-        $this->json();
-        print json_encode($this->output($result, 200, 'success'));
+        print $this->output($result, 200, 'success');
     }
 
     public function errorJson($result = []) {
-        $this->json();
-        print json_encode($this->output($result, 500, 'error'));
+        print $this->output($result, 500, 'error');
     }
 
-    public function output($result = [], $code = 200, $msg = 'success') {
+    public function json($result = [], $code = 200, $msg = 'success') {
+        print $this->output($result, $code, $msg);
+    }
+
+    protected function output($result, $code, $msg) {
+        $this->setJsonHeader();
         $ret = [];
         $ret['code'] = $code;
         $ret['msg']  = $msg;
         if ($result) {
             $ret['result'] = $result;
         }
-        return $ret;
+        return json_encode($ret);
     }
 }

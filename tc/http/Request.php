@@ -27,19 +27,28 @@ class Request {
         $this->_init();
 	}
 
+	/**
+	 * 初始化 模式 控制器 方法
+	 * index.php/index/index?age=123
+	 * @return void
+	 */
     protected function _init() {
 		if ( $p = strpos($this->_uri, '?') ) {
+			// 去掉 ? 后面的字符  去掉第一个 / 斜线
 			$uri = strtolower(substr($this->_uri, 1, $p-1));
 		} else {
 			$uri = strtolower(substr($this->_uri, 1));
 		}
 		$info = explode('/', $uri);
 		if ( isset($info[0]) && $pos = strpos($info[0], '.php') ) {
+			// 去掉 index.php 字符  
 			if ( substr($info[0], $pos) == '.php' ) {
 				unset($info[0]);
 			}
 		}
 		$this->setRoute($info);
+		$this->setAction(ucfirst(array_pop($info)));
+		$this->setController('\\'.ucfirst(array_pop($info)).'Controller');
 	}
 
 	public function setModule($m) {

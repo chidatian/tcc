@@ -72,18 +72,27 @@ class Mysql
         }
         return $this->prepareQuery($this->_sql, $map['bind']);
 	}
-	
+
     public function create($table, $map) {
 		$this->_setInsertSql($table, $map);
 
-		return $this->mpdo->insert($this->_sql);
+		$stmt = $this->prepare($this->_sql);
+		$stmt->execute($map);
+		return $this->mpdo->lastInsertId();
 	}
 
     public function update($table, $map) {
-		$where = $map['conditions'] ?? [];
-		$this->_setModifySql($table, $map['data'], $where);
+		$where = isset($map['conditions']) ? $map['conditions'] : [];
 
-		return $this->mpdo->update($this->_sql);
+		$bind = $this->_setModifySql($table, $map['data'], $where);
+		
+		if ( !empty($map['bind'])) {
+			$bind = array_merge($bind, $map['bind']);
+		}
+
+		$stmt = $this->prepare($this->_sql);
+		$stmt->execute($bind);
+		return $stmt->rowCount();
 	}
 
     public function save($table, $map) {
@@ -117,35 +126,27 @@ class Mysql
 	private function _setInsertSql($table, $data) {
 		$this->_sql = 'INSERT INTO '.$table;
 		$name = array_keys($data);
-		$value = array_values($data);
-		foreach ($value as &$item) {
-			$item = is_string($item) ? '"'.$item.'"' : $item;
-		}
 
 		$this->_sql .= ' ( '.implode(',', $name).' ) ';
 		$this->_sql .= 'VALUES';
-		$this->_sql .= ' ( '.implode(',', $value).' ) ';
+		$this->_sql .= ' ( :'.implode(',:', $name).' ) ';
 		
 	}
 
 	private function _setModifySql($table, $data, $where) {
 		$this->_sql = 'UPDATE '.$table;
 		$this->_sql .= ' SET ';
-		$map = [];
+		$map = $bind = [];
 		foreach ($data as $k => $v) {
-			$v = is_string($v) ? '"'.$v.'"' : $v;
-			$map[] = $k.' = '.$v;
+			$bind['_TC_'.$k] = $v;
+			$map[] = $k.' = :_TC_'.$k;
 		}
 		$this->_sql .= implode(',',$map);
-		
+
 		if ( !empty($where)) {
-			$map = [];
-			foreach ($where as $k => $v) {
-				$v = is_string($v) ? '"'.$v.'"' : $v;
-				$map[] = $k.' = '.$v;
-			}
-			$this->_sql .= ' WHERE ';
-			$this->_sql .= implode(' AND ', $map);
+			$this->_sql .= ' WHERE ' . $where;
 		}
+
+		return $bind;
 	}
 }

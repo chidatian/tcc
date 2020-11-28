@@ -2,11 +2,13 @@
 
 namespace Tc\Lib;
 
+/**
+ * 分页
+ */
 class Pagination {
-    protected $offset   = 0;
-    protected $limit    = 0;
-    protected $page     = 0;
-    protected $pageSize = 0;
+    public $offset   = 0;
+    public $page     = 0;
+    public $pageSize = 0;
 
     public function __construct($page=1, $pageSize=20) {
         $page       = intval($page);
@@ -16,11 +18,10 @@ class Pagination {
         $this->pageSize = $pageSize > 0 ? $pageSize : 20;
         
         $this->offset   = ($this->page-1) * $this->pageSize;
-        $this->limit    = $this->pageSize;
     }
 
     public function limit() {
-        return $this->offset . ',' . $this->limit;
+        return $this->offset . ',' . $this->pageSize;
     }
 
     public function page($total) {
@@ -38,9 +39,5 @@ class Pagination {
             'data' => $data,
             'page' => $this->page($total)
         );
-    }
-
-    public function __get($var) {
-        return isset($this->$var) ? $this->$var : null;
     }
 }
