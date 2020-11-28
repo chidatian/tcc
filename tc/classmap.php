@@ -3,11 +3,11 @@
  * 命名空间\类名 => 绝对路径
  */
 return array(
-	// core
-	'\Tc\Config'    	=> __DIR__.'/core/Config.php',
-	'\Tc\Di'    		=> __DIR__.'/core/Di.php',
-	'\Tc\ErrInterface'	=> __DIR__.'/core/ErrInterface.php',
-	'\Tc\Loader' 		=> __DIR__.'/core/Loader.php',
+	// base
+	'\Tc\Config'    	=> __DIR__.'/base/Config.php',
+	'\Tc\Di'    		=> __DIR__.'/base/Di.php',
+	'\Tc\ErrInterface'	=> __DIR__.'/base/ErrInterface.php',
+	'\Tc\Loader' 		=> __DIR__.'/base/Loader.php',
 	// error
 	'\Tc\Err'			=> __DIR__.'/err/Err.php',
 	'\Tc\Err\ErrCode'	=> __DIR__.'/err/ErrCode.php',
