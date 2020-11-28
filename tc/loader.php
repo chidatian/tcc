@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__.'/core/Loader.php';
+require __DIR__.'/base/Loader.php';
 
 $loader = new \Tc\Loader();
 
