@@ -1,6 +1,6 @@
 <?php
 
-namespace Tc;
+namespace Tc\Err;
 
 interface ErrInterface {
 

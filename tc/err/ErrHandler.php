@@ -2,7 +2,7 @@
 
 namespace Tc\Err;
 
-use Tc\ErrInterface;
+use Tc\Err\ErrInterface;
 
 class ErrHandler {
 

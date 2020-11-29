@@ -1,10 +1,13 @@
 <?php
 
-namespace Tc\Err;
+namespace Tc\Err\Exceptions;
 
-use Tc\ErrInterface;
+use Tc\Err\ErrInterface;
 
-class SystemErr extends \Exception implements ErrInterface{
+/**
+ * 框架系统 [10000 - 11000]
+ */
+class SystemException extends \Exception implements ErrInterface{
 
     public function __construct($code, $msg)
     {

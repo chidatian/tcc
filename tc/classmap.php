@@ -1,18 +1,18 @@
 <?php
 /**
- * 命名空间\类名 => 绝对路径
+ * \命名空间\类名 => 绝对路径
  */
 return array(
 	// base
 	'\Tc\Config'    	=> __DIR__.'/base/Config.php',
 	'\Tc\Di'    		=> __DIR__.'/base/Di.php',
-	'\Tc\ErrInterface'	=> __DIR__.'/base/ErrInterface.php',
 	'\Tc\Loader' 		=> __DIR__.'/base/Loader.php',
 	// error
-	'\Tc\Err'			=> __DIR__.'/err/Err.php',
-	'\Tc\Err\ErrCode'	=> __DIR__.'/err/ErrCode.php',
-	'\Tc\Err\ErrHandler'=> __DIR__.'/err/ErrHandler.php',
-	'\Tc\Err\SystemErr'	=> __DIR__.'/err/SystemErr.php',
+	'\Tc\Err'				=> __DIR__.'/err/Err.php',
+	'\Tc\Err\ErrCode'		=> __DIR__.'/err/ErrCode.php',
+	'\Tc\Err\ErrHandler'	=> __DIR__.'/err/ErrHandler.php',
+	'\Tc\Err\ErrInterface'	=> __DIR__.'/err/ErrInterface.php',
+	'\Tc\Err\Exceptions\SystemException'		=> __DIR__.'/err/exceptions/SystemException.php',
 
 	// db
 	'\Tc\Db\Mysql' 			=> __DIR__.'/db/mysql/Mysql.php',
