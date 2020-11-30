@@ -21,7 +21,7 @@ class App {
 			return new Response();
 		});
 
-		$di->setShare('session', function() {
+		$di->call('session') || $di->setShare('session', function() {
 			return new Session();
 		});
 
@@ -42,7 +42,15 @@ class App {
 		$response = $this->response;
 
 		$response->obStart();
-		$this->session->start();
+
+		if ($this->config->session->switch) {
+
+			if ( $this->config->session->savepath) {
+				$this->session->setSavePath($this->config->session->savepath);
+			}
+
+			$this->session->start();
+		}
 		
 		// 使用 路由
 		if ( $this->router && 

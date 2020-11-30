@@ -16,7 +16,7 @@ class SystemException extends \Exception implements ErrInterface{
     }
     
     public function handle() {
-        throw new self($this->code, $this->message, null);
+        throw $this;
     }
     
 }

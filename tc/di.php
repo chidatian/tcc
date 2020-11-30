@@ -23,8 +23,7 @@ $di->setShare('config', function(){
 		],
 		'session' => [
 			'switch' => true,
-			'type'   => 'redis',
-
+			'savePath'   => 'D:\nmp\www\git\tcc\public\sess'
 		]
 	]);
 });
