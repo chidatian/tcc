@@ -12,7 +12,8 @@ return array(
 	'\Tc\Err\ErrCode'		=> __DIR__.'/err/ErrCode.php',
 	'\Tc\Err\ErrHandler'	=> __DIR__.'/err/ErrHandler.php',
 	'\Tc\Err\ErrInterface'	=> __DIR__.'/err/ErrInterface.php',
-	'\Tc\Err\Exceptions\SystemException'		=> __DIR__.'/err/exceptions/SystemException.php',
+	'\Tc\Err\Exceptions\SystemException'	=> __DIR__.'/err/exceptions/SystemException.php',
+	'\Tc\Err\Exceptions\ExceptionBase'		=> __DIR__.'/err/exceptions/ExceptionBase.php',
 
 	// db
 	'\Tc\Db\Mysql' 			=> __DIR__.'/db/mysql/Mysql.php',

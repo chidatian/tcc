@@ -7,13 +7,9 @@ use Tc\Err\ErrInterface;
 /**
  * 框架系统 [10000 - 11000]
  */
-class SystemException extends \Exception implements ErrInterface{
+class SystemException extends ExceptionBase implements ErrInterface{
 
-    public function __construct($code, $msg)
-    {
-        $this->code     = $code;
-        $this->message  = $msg;
-    }
+	// public Exception::__construct ([ string $message = "" [, int $code = 0 [, Throwable $previous = NULL ]]] )
     
     public function handle() {
         throw $this;

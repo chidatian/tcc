@@ -6,7 +6,7 @@ use Tc\Di;
  * 抛异常统一处理
  * 
  */
-set_exception_handler(function(Exception $e) {
+set_exception_handler(function($e) {
     $code = $e->getCode();
     $msg = $e->getMessage();
     $file = $e->getFile();
@@ -19,7 +19,7 @@ set_exception_handler(function(Exception $e) {
     }
 
     switch ($class) {
-        case 'JsonErr':
+        case 'JsonException':
             Di::instance()->call('response')->json([],$code,$msg);
             break;
         default:

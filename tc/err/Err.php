@@ -18,7 +18,7 @@ class Err {
             $class = '\Tc\Err\Exceptions\SystemException';
         }
 
-        $err = new $class($code,$msg);
+        $err = new $class($msg, $code);
 
         return $err;
     }
