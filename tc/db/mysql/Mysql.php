@@ -11,32 +11,41 @@ use Tc\Db\Mysql\Mresult;
 class Mysql
 {
     protected $mpdo = null;
-    protected $stmt = null;
     protected $_sql = '';
 
     public function __construct($config) {
         $this->mpdo = new Mpdo($config);
 	}
 
-    public function prepare($sql) {
+	/**
+	 * 预处理 
+	 *
+	 * @param string $sql
+	 * @return pdostatement
+	 */
+    public function prepare(string $sql) {
         return $this->mpdo->prepare($sql);
 	}
 
 	/**
-	 * 原生sql
+	 * 原生 sql
+	 *
+	 * @param string $sql
+	 * @return Mresult
 	 */
-	public function query($sql,$bind=[]) {
-		if ( empty($bind)) {
-			$stmt = $this->mpdo->query($sql);
-			return (new Mresult($stmt));
-		}
-
-		else {
-			return $this->prepareQuery($sql, $bind);
-		}
+	public function query(string $sql) {
+		$stmt = $this->mpdo->query($sql);
+		return (new Mresult($stmt));
 	}
 
-    public function prepareQuery($sql,$bind) {
+	/**
+	 * 预处理 sql
+	 *
+	 * @param string $sql
+	 * @param array $bind
+	 * @return Mresult
+	 */
+    public function prepareQuery(string $sql,array $bind) {
         
         $stmt = $this->prepare($sql);
 		$stmt->execute($bind);
@@ -46,22 +55,29 @@ class Mysql
 
 	/**
 	 * 获取一条
+	 *
+	 * @param string $table 表名
+	 * @param array $map
+	 * @return Mresult
 	 */
-    public function findFirst($table, $map) {
+    public function findFirst(string $table, array $map) {
         $this->_setQuerySql($table, $map);
         $this->_sql .= ' LIMIT 1 ';
 
         if ( empty($map['bind'])) {
-			$stmt = $this->query($this->_sql);
-			return (new Mresult($stmt, true));
+			return $this->query($this->_sql);
         }
         return $this->prepareQuery($this->_sql, $map['bind']);
     }
 	
 	/**
 	 * 获取多条
+	 *
+	 * @param string $table 表名
+	 * @param array $map
+	 * @return void
 	 */
-    public function find($table, $map) {
+    public function find(string $table, array $map) {
 		$this->_setQuerySql($table, $map);
 		
 		if ( isset($map['limit']) && !empty($map['limit'])) {
@@ -73,7 +89,14 @@ class Mysql
         return $this->prepareQuery($this->_sql, $map['bind']);
 	}
 
-    public function create($table, $map) {
+	/**
+	 * 添加一条
+	 *
+	 * @param string $table
+	 * @param array $map
+	 * @return int 插入的 id
+	 */
+    public function create(string $table, array $map) {
 		$this->_setInsertSql($table, $map);
 
 		$stmt = $this->prepare($this->_sql);
@@ -81,7 +104,14 @@ class Mysql
 		return $this->mpdo->lastInsertId();
 	}
 
-    public function update($table, $map) {
+	/**
+	 * 修改一条
+	 *
+	 * @param string $table
+	 * @param array $map
+	 * @return int 受影响的行数
+	 */
+    public function update(string $table, array $map) {
 		$where = isset($map['conditions']) ? $map['conditions'] : [];
 
 		$bind = $this->_setModifySql($table, $map['data'], $where);
@@ -99,6 +129,7 @@ class Mysql
 
 	}
 
+	// 组装 语句
     private function _setQuerySql($table, $map) {
         $this->_sql = 'SELECT ';
         
@@ -123,6 +154,7 @@ class Mysql
 		}
 	}
 
+	// 组装 语句
 	private function _setInsertSql($table, $data) {
 		$this->_sql = 'INSERT INTO '.$table;
 		$name = array_keys($data);
@@ -133,6 +165,7 @@ class Mysql
 		
 	}
 
+	// 组装 语句
 	private function _setModifySql($table, $data, $where) {
 		$this->_sql = 'UPDATE '.$table;
 		$this->_sql .= ' SET ';

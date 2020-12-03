@@ -5,7 +5,7 @@ namespace Tc\Err\Exceptions;
 use Tc\Err\ErrInterface;
 
 /**
- * 框架系统 [10000 - 11000]
+ * 框架异常 [10000 - 11000]
  */
 class SystemException extends ExceptionBase implements ErrInterface{
 

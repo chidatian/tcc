@@ -2,6 +2,10 @@
 
 namespace Tc;
 
+/**
+ * 自动加载
+ * 
+ */
 class Loader {
 	protected $_classmap	 = array();
 	protected $_dirs 	 	 = array();
@@ -12,6 +16,12 @@ class Loader {
 		spl_autoload_register([$this, '_tc_loader']);
 	}
 
+	/**
+	 * 注册目录
+	 *
+	 * @param array $dirs
+	 * @return void
+	 */
 	public function registerDirs($dirs = []) {
 		foreach ($dirs as $item) {
 			$this->_dirs[] = $item;
@@ -19,6 +29,12 @@ class Loader {
 		spl_autoload_register([$this, '_dirs_loader']);
 	}
 
+	/**
+	 * 注册命名空间
+	 *
+	 * @param array $namespaces
+	 * @return void
+	 */
 	public function registerNamespaces($namespaces = []) {
 		foreach ($namespaces as $k => $item) {
 			$this->_namespaces[$k] = $item;

@@ -12,6 +12,11 @@ class Session {
         session_set_save_handler($obj);
     }
 
+    /**
+     * 开启 session
+     *
+     * @return void
+     */
     public function start() {
         if (session_status() != PHP_SESSION_ACTIVE) {
             session_save_path($this->_savePath);
@@ -30,6 +35,12 @@ class Session {
         return true;
     }
 
+    /**
+     * 设置 session 存储目录
+     *
+     * @param [type] $path
+     * @return void
+     */
     public function setSavePath($path) {
         $this->_savePath = $path;
     }

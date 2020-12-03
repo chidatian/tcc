@@ -9,7 +9,14 @@ use Tc\Err\ErrCode;
  */
 class Err {
 
-    public static function create($code, $msg='未知错误') {
+    /**
+     * 实例化一个异常
+     *
+     * @param integer $code
+     * @param string $msg
+     * @return object
+     */
+    public static function create(int $code, $msg='未知错误') {
         $err = null;
         $msg = ErrCode::$MAP[$code] ?? $msg;
         $class = '\Tc\Err\Exceptions\SystemException';

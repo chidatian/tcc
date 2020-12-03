@@ -2,8 +2,18 @@
 
 namespace Tc;
 
+/**
+ * 配置文件类
+ * 
+ */
 class Config {
-	public function __construct($conf) {
+	
+	/**
+	 * 构造
+	 *
+	 * @param array $conf
+	 */
+	public function __construct(array $conf) {
 		$this->_init($conf, $this);
 	}
 

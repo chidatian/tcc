@@ -10,6 +10,12 @@ class Pagination {
     public $page     = 0;
     public $pageSize = 0;
 
+    /**
+     * 构造
+     *
+     * @param integer $page
+     * @param integer $pageSize
+     */
     public function __construct($page=1, $pageSize=20) {
         $page       = intval($page);
         $pageSize   = intval($pageSize);
@@ -24,6 +30,12 @@ class Pagination {
         return $this->offset . ',' . $this->pageSize;
     }
 
+    /**
+     * 页数
+     *
+     * @param int $total
+     * @return array
+     */
     public function page($total) {
         return array(
             'page'      => $this->page,
@@ -33,6 +45,13 @@ class Pagination {
         );
     }
 
+    /**
+     * 格式化分页数据
+     *
+     * @param mixed $data
+     * @param int $total
+     * @return array
+     */
     public function format($data, $total) {
         
         return array(

@@ -2,10 +2,19 @@
 
 namespace Tc;
 
+/**
+ * 容器类 [ 单例 ]
+ * 
+ */
 class Di {
 	protected static $_instance 	= null;
 	protected $_services		= array();
 
+	/**
+	 * 获取实例
+	 *
+	 * @return Di
+	 */
 	public static function instance() {
 		if ( self::$_instance === null) {
 			self::$_instance = new self;
@@ -13,7 +22,13 @@ class Di {
 		return self::$_instance;
 	}
 
-	public function call($name) {
+	/**
+	 * 呼叫一个服务
+	 *
+	 * @param string $name
+	 * @return object
+	 */
+	public function call(string $name) {
 		if ( !isset($this->_services[$name]) ) {
 			return null;
 		}
@@ -23,19 +38,45 @@ class Di {
 		return $this->_get($name);
 	}
 
-	public function set($name, $closure) {
+	/**
+	 * 添加一个服务
+	 *
+	 * @param string $name
+	 * @param mixed $closure
+	 * @return void
+	 */
+	public function set(string $name, $closure) {
 		$this->_setServices($name, $closure, false, null);
 	}
 
-	public function get($name) {
+	/**
+	 * 获取一个服务
+	 *
+	 * @param string $name
+	 * @return void
+	 */
+	public function get(string $name) {
 		return $this->_get($name);
 	}
 
-	public function setShare($name, $closure) {
+	/**
+	 * 添加一个 单例 服务 
+	 *
+	 * @param string $name
+	 * @param mixed $closure
+	 * @return void
+	 */
+	public function setShare(string $name, $closure) {
 		$this->_setServices($name, $closure, true, null);
 	}
 
-	public function getShare($name) {
+	/**
+	 * 获取一个 单例 服务
+	 *
+	 * @param string $name
+	 * @return object
+	 */
+	public function getShare(string $name) {
 		return $this->_getShare($name);
 	}
 
