@@ -7,25 +7,29 @@ use Tc\Db\Mysql;
 $di = Di::instance();
 
 $di->setShare('config', function(){
-	return new \Tc\Config([
-		'REDIS' => [
-			'IP' => '127.0.0.1',
-			'port' => 6379,
-			'auth' => '',
-			'select' => 0
-		],
-		'mysql' => [
-			'ip' => '127.0.0.1',
-			'port' => 3306,
-			'username' => 'root',
-			'password' => 'root',
-			'db'   => 'tmp',
-		],
-		'session' => [
-			'switch' => true,
-			'savePath'   => 'D:\nmp\www\git\tcc\public\sess'
-		]
-	]);
+	return new \Tc\Config(__DIR__.'/public.ini');
+	// return new \Tc\Config([
+	// 	'REDIS' => [
+	// 		'IP' => '127.0.0.1',
+	// 		'port' => 6379,
+	// 		'auth' => '',
+	// 		'select' => 0
+	// 	],
+	// 	'mysql' => [
+	// 		'ip' => '127.0.0.1',
+	// 		'port' => 3306,
+	// 		'username' => 'root',
+	// 		'password' => 'root',
+	// 		'db'   => 'tmp',
+	// 	],
+	// 	'session' => [
+	// 		'switch' => true,
+	// 		'savePath'   => 'D:\nmp\www\git\tcc\public\sess'
+	// 	],
+	// 	'log' => [
+	// 		'error' => 'D:\keke\log\error.log'
+	// 	]
+	// ]);
 });
 
 $di->setShare('router', function() {

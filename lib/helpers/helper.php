@@ -1,6 +1,5 @@
 <?php
 
-use Tc\Lib\LogHelper;
 
 if(!function_exists('pp')){
 	function pp($val, $return = false)
