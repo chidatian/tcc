@@ -7,6 +7,7 @@ $loader = new \Tc\Loader();
 //
 
 $loader->registerDirs([
+    __DIR__ . '/lib/',
     dirname(__DIR__) . '/controllers/',
     dirname(__DIR__) . '/models/'
 ]);
