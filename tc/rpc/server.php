@@ -8,6 +8,7 @@ class Server
     const YAR_MAGIC_NUM = 0x80DFEC60;
 
     protected $host;
+    protected $socket;
 
     public function __construct()
     {
@@ -41,7 +42,13 @@ class Server
 
     protected function accept()
     {
-        while (($conn = socket_accept($this->socket))) {
+        while ( true ) {
+            $read = [$this->socket]; $write = $except = null;
+            if ( socket_select($read, $write, $except, 0) < 1 ) {
+                continue;
+            }
+
+            $conn = socket_accept($this->socket);
             $buf = socket_read($conn, self::HEADER_SIZE, PHP_BINARY_READ);
             if ($buf === false) {
                 socket_shutdown($conn);
@@ -99,7 +106,7 @@ class Server
             "NnNNA32A32N",
             $id,
             0,
-            0x80DFEC60,
+            self::YAR_MAGIC_NUM,
             0,
             "Yar PHP TCP Server",
             "",
@@ -128,10 +135,18 @@ class Server
         return $request;
     }
 
-    protected function query($method, $args)
+    protected function query($method, ...$args)
     {
-        var_dump(func_get_args());
-        return call_user_func_array("Api::{$method}", $args);
+        try {
+
+            return call_user_func_array("Api::{$method}", $args);
+        } catch (Throwable $e) {
+            return [
+                'message' => 'Yar RPC Server ERROR',
+                'request' => func_get_args(),
+                'error'   => $e->getTraceAsString(),
+            ];
+        }
     }
 
     protected function handle($request, &$ret)
@@ -177,13 +192,9 @@ class Server
     }
 }
 
+
+include_once '../loader.php';
+
 (new Server)->run();
 
 
-class Api
-{
-    public static function test()
-    {
-        return func_get_args();
-    }
-}
