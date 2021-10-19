@@ -7,7 +7,8 @@ class SessionManager {
 
     public function __construct($obj = null) {
         if ( !$obj instanceof \SessionHandlerInterface ) {
-            $obj = new \Tc\Session\FileSessionHandler;
+            ini_set('session.save_handler','files');
+            $obj = new FileSessionHandler;
         }
         session_set_save_handler($obj);
     }
