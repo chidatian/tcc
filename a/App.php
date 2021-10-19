@@ -20,7 +20,13 @@ class App
 
 		$lib->set('response', new Response());
 
-		$lib->get('session') || $lib->set('session', new SessionManager());
+		if ( ! $lib->get('session') ) {
+			$switch = isset($this->config->session->switch) ? $this->config->session->switch : 0;
+			
+			$savepath = isset($this->config->session->savepath) ? $this->config->session->savepath : '';
+			
+			$lib->set('session', new SessionManager(null,$switch, $savepath));
+		}
 
 	}
 
@@ -36,14 +42,7 @@ class App
 
 		$response->obStart();
 
-		if ($this->config->session->switch) {
-
-			if ( $this->config->session->savepath) {
-				$this->session->setSavePath($this->config->session->savepath);
-			}
-
-			$this->session->start();
-		}
+		$this->session->start();
 		
 		// 使用 路由
 		if ( $this->router && 
