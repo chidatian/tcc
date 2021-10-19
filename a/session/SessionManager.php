@@ -6,15 +6,10 @@ class SessionManager {
     protected $_savePath = '/tmp';
 
     public function __construct($obj = null) {
-        if ( is_null($obj) ) {
-            ini_set('session.save_handler','files');
-            $obj = new FileSessionHandler;
-
+        if ( !$obj instanceof \SessionHandlerInterface ) {
+            $obj = new \Tc\Session\FileSessionHandler;
         }
-        
-        if ( $obj instanceof \SessionHandlerInterface ) {
-            session_set_save_handler($obj);
-        }
+        session_set_save_handler($obj);
     }
 
     /**
