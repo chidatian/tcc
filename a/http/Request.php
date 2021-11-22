@@ -24,7 +24,6 @@ class Request {
 		$this->_uri = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
 		$this->_port = isset($_SERVER['REMOTE_PORT']) ? $_SERVER['REMOTE_PORT'] : '';
 		$this->_ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
-        $this->_init();
 	}
 
 	/**
@@ -32,7 +31,7 @@ class Request {
 	 * index.php/index/index?age=123
 	 * @return void
 	 */
-    protected function _init() {
+    public function parse() {
 		if ( $p = strpos($this->_uri, '?') ) {
 			// 去掉 ? 后面的字符  去掉第一个 / 斜线
 			$uri = strtolower(substr($this->_uri, 1, $p-1));
@@ -49,6 +48,7 @@ class Request {
 		$this->setRoute($info);
 		$this->setAction(ucfirst(array_pop($info)));
 		$this->setController('\\'.ucfirst(array_pop($info)).'Controller');
+		return $this;
 	}
 
 	public function setModule($m) {

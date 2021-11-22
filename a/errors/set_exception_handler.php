@@ -23,7 +23,7 @@ set_exception_handler(function($e) {
             echo $msg;
             break;
         default:
-            echo "ERROR: [ $class ] [ $code ] [ $msg ] [ $file($line) ] " . PHP_EOL;
+            echo "ERROR: $class [$code] $msg $file($line) " . PHP_EOL;
             echo $traceStr;
     }
 });

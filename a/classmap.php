@@ -4,7 +4,7 @@ return [
     "\A\App" => __DIR__ . '/App.php',
     "\A\Autoload" => __DIR__ . '/Autoload.php',
     "\A\Config" => __DIR__ . '/Config.php',
-    "\A\Lib" => __DIR__ . '/Lib.php',
+    "\A\Library" => __DIR__ . '/Library.php',
     "\A\Logger" => __DIR__ . '/Logger.php',
     // http
     "\A\Http\Cookie" => __DIR__ . '/http/Cookie.php',

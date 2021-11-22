@@ -2,7 +2,7 @@
 
 namespace A;
 
-use A\Lib;
+use A\Library;
 use A\Http\Cookie;
 use A\Http\Request;
 use A\Http\Response;
@@ -12,27 +12,32 @@ class App
 {
     public function __construct()
     {
-		$lib = Lib::getInstance();
+		$lib = Library::getInstance();
 
-		$lib->set('request', new Request());
+		$lib->setSingle('request', function() {
+			return (new Request())->parse();
+		});
 		
-		$lib->set('cookie', new Cookie());
+		$lib->setSingle('cookie', new Cookie());
 
-		$lib->set('response', new Response());
+		$lib->setSingle('response', new Response());
 
 		if ( ! $lib->get('session') ) {
-			$switch = isset($this->config->session->switch) ? $this->config->session->switch : 0;
 			
-			$savepath = isset($this->config->session->savepath) ? $this->config->session->savepath : '';
-			
-			$lib->set('session', new SessionManager(null,$switch, $savepath));
+			$lib->setSingle('session', function(){
+				$switch = isset($this->config->session->switch) ? $this->config->session->switch : 0;
+				
+				$savepath = isset($this->config->session->savepath) ? $this->config->session->savepath : '';
+
+				return new SessionManager(null,$switch, $savepath);
+			});
 		}
 
 	}
 
     public function __get($name)
     {
-        return Lib::getInstance()->get($name);
+		return Library::getInstance()->get($name);
     }
 
 	public function run()
