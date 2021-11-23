@@ -42,6 +42,9 @@ class Members extends Model {
 ### SELECT
 
 ```
+@return Mresult
+(new Members)->find([])->toArray();
+
 (new Members)->findFirst([
         'columns' => 'id,user',
         'conditions' => 'id = :id',

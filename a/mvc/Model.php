@@ -5,8 +5,9 @@ namespace A\Mvc;
 use A\Library;
 
 class Model {
-	protected $dbName 	  = '';
-	protected $tableName  = '';
+
+	protected $connection = '';
+    protected $table = '';
 
 	public function __construct() {
 		
@@ -17,20 +18,12 @@ class Model {
         return Library::getInstance()->get($name);
 	}
 
-	public function tableName() {
-		return $this->tableName;
-	}
-
-	public function dbName() {
-		return $this->dbName;
-	}
-
 	public function __call($action, $params) {
 		$this->_validate();
 		
-		array_unshift($params, $this->tableName());
+		array_unshift($params, $this->table);
 		
-		$dbName = $this->dbName();
+		$dbName = $this->connection;
 
 		return call_user_func_array([$this->$dbName, $action], $params);
 	}
@@ -40,21 +33,21 @@ class Model {
 
 		$static->_validate();
 
-		array_unshift($params, $static->tableName());
+		array_unshift($params, $static->table);
 		
-		$dbName = $static->dbName();
+		$dbName = $static->connection;
 		
 		return call_user_func_array([$static->$dbName, $action], $params);
 	}
 
 	public function _validate() {
-		$mysql = $this->dbName;
+		$mysql = $this->connection;
 		if ( !$db = $this->$mysql) {
-			throw new \Exception('not found dbName');
+			throw new \Exception('not found connection');
 		}
 
-		if ( empty($this->tableName) ) {
-			throw new \Exception('not found tableName');
+		if ( empty($this->table) ) {
+			throw new \Exception('not found table');
 		}
 	}
 
@@ -65,15 +58,15 @@ class Model {
 	protected function checkTableInfo() {
 		return true;
 
-		$fileName = './cache/db/'.$this->dbName.'/'.$this->tableName;
+		$fileName = './cache/db/'.$this->dbName.'/'.$this->table;
 		if ( file_exists($fileName)) {
 			return file_get_contents($fileName);
 		}
 
-		$sql = 'SELECT * FROM INFORMATION_SCHEMA.`COLUMNS` WHERE table_name = "' . $this->tableName . '"';
+		$sql = 'SELECT * FROM INFORMATION_SCHEMA.`COLUMNS` WHERE table_name = "' . $this->table . '"';
         // $sql = 'select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS where table_name = "members"';
 
-		$dbName = $this->dbName();
+		$dbName = $this->connection;
 
         $res = $this->$dbName->query($sql);
 		

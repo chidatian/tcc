@@ -11,7 +11,7 @@ class Orm
     protected $_sql = '';
 
     public function __construct($config) {
-        $this->mpdo = new Mpdo($config->ip,$config->port,$config->username,$config->password,$config->database);
+        $this->mpdo = new Mpdo($config['ip'],$config['port'],$config['username'],$config['password'],$config['database']);
 	}
 
 	/**
@@ -62,9 +62,12 @@ class Orm
         $this->_sql .= ' LIMIT 1 ';
 
         if ( empty($map['bind'])) {
-			return $this->query($this->_sql);
-        }
-        return $this->prepareQuery($this->_sql, $map['bind']);
+			$res = $this->query($this->_sql)->toArray();
+        } else {
+
+			$res = $this->prepareQuery($this->_sql, $map['bind'])->toArray();
+		}
+		return array_shift($res);
     }
 	
 	/**
