@@ -1,8 +1,8 @@
 <?php
 
-namespace Tc\Mvc;
+namespace A\Mvc;
 
-use A\Lib;
+use A\Library;
 
 class Controller {
 	public function __construct() {
@@ -11,6 +11,6 @@ class Controller {
 
 	public function __get($name) {
 		
-        return Lib::getInstance()->get($name);
+        return Library::getInstance()->get($name);
 	}
 }

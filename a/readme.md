@@ -34,7 +34,7 @@ class IndexController extends Controller {
 
 ```
 class Members extends Model {
-	protected $dbName = 'tmp'; // Di 注册的数据库名
+	protected $dbName = 'tmp'; // Labrary 注册的数据库名
 	protected $tableName = 'members'; // 表名
 }
 ```

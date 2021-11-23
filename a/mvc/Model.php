@@ -1,8 +1,8 @@
 <?php
 
-namespace Tc\Mvc;
+namespace A\Mvc;
 
-use A\Lib;
+use A\Library;
 
 class Model {
 	protected $dbName 	  = '';
@@ -10,12 +10,11 @@ class Model {
 
 	public function __construct() {
 		
-		$this->checkTableInfo();
 	}
 
 	public function __get($name) {
 
-        return Lib::getInstance()->get($name);
+        return Library::getInstance()->get($name);
 	}
 
 	public function tableName() {

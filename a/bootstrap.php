@@ -6,7 +6,10 @@ require_once __DIR__ . '/Autoload.php';
 
 $classMap = include_once(__DIR__ . '/classmap.php');
 
-(new \A\Autoload($classMap))->registerDirs(['/a/b/c']);
+(new \A\Autoload($classMap))->registerDirs([
+    dirname(__DIR__) . '/controllers/',
+    dirname(__DIR__) . '/models/'
+]);
 
 \A\Library::getInstance()->setSingle('config', new \A\Config(__DIR__ . '/env.ini'));
 
