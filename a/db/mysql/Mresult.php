@@ -68,7 +68,11 @@ class Mresult implements \Iterator, \Countable, \ArrayAccess {
             $this->array[] = $row;
         }
         $this->rewind();
+        
 		// $this->array = $result->fetchAll(PDO::FETCH_ASSOC);
+        
+        // close pdo statement
+        $result = null;
 	}
 
 	public function toArray() {

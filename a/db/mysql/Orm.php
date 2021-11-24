@@ -14,6 +14,11 @@ class Orm
         $this->mpdo = new Mpdo($config['ip'],$config['port'],$config['username'],$config['password'],$config['database']);
 	}
 
+	public function __destruct()
+	{
+		$this->mpdo = null;
+	}
+
 	/**
 	 * 预处理 
 	 *
@@ -124,10 +129,6 @@ class Orm
 		$stmt = $this->prepare($this->_sql);
 		$stmt->execute($bind);
 		return $stmt->rowCount();
-	}
-
-    public function save($table, $map) {
-
 	}
 
 	// 组装 语句

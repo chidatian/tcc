@@ -6,7 +6,7 @@ class Mysql
 
     public function __construct($conf)
     {
-        $this->link = @\mysqli_connect($conf->ip, $conf->username, $conf->password, $conf->db, $conf->port);
+        $this->link = @\mysqli_connect($conf['ip'], $conf['username'], $conf['password'], $conf['db'], $conf['port']);
         // $this->link = @\mysqli_connect(DB_HOST, DB_USER, DB_PWD, DB_NAME, DB_PORT);
         if (!$this->link) {
             echo \mysqli_connect_errno() . PHP_EOL;
