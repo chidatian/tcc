@@ -43,7 +43,7 @@ class Members extends Model {
 
 ```
 @return Mresult
-(new Members)->find([])->toArray();
+(new Members)->find([])->get()->toArray();
 
 (new Members)->findFirst([
         'columns' => 'id,user',
@@ -69,9 +69,11 @@ class Members extends Model {
 
 ```
 (new Members)->update([
-            'user' => 'ddd edit'
-        ],[
-            'id' => 4
+            'data' => [
+                'passwd' => 'a""a""a"'
+            ],
+            'conditions' => 'id = :id',
+            'bind' => ['id' => 8],
         ]);
 ```
 

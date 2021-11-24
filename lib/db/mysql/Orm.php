@@ -8,9 +8,6 @@ namespace A\Db\Mysql;
 class Orm
 {
     protected $mpdo = null;
-    protected $mresult = null;
-    protected $lastInsertId = null;
-    protected $rowCount = null;
     protected $_sql = '';
 
     public function __construct($config) {
@@ -40,8 +37,7 @@ class Orm
 	 */
 	public function query(string $sql) {
 		$stmt = $this->mpdo->query($sql);
-		$this->mresult = new Mresult($stmt);
-		return $this;
+		return (new Mresult($stmt));
 	}
 
 	/**
@@ -55,18 +51,9 @@ class Orm
         
         $stmt = $this->prepare($sql);
 		$stmt->execute($bind);
-		$this->mresult = new Mresult($stmt);
-		return $this;
+		return (new Mresult($stmt));
         // return $stmt->fetchAll(2);
     }
-
-	public function count() {
-		return count($this->mresult);
-	}
-
-	public function get() {
-		return $this->mresult;
-	}
 
 	/**
 	 * 获取一条
@@ -75,26 +62,19 @@ class Orm
 	 * @param array $map
 	 * @return Mresult
 	 */
-    public function findFirst(string $table, array $map = []) {
+    public function findFirst(string $table, array $map) {
         $this->_setQuerySql($table, $map);
         $this->_sql .= ' LIMIT 1 ';
 
         if ( empty($map['bind'])) {
 			$stmt = $this->mpdo->query($this->_sql);
-			// return (new Mresult($stmt, true));
-			$this->mresult = new Mresult($stmt, true);
-			return $this;
+			return (new Mresult($stmt, true));
         }
 		// 预处理
 		$stmt = $this->prepare($this->_sql);
 		$stmt->execute($map['bind']);
-		$this->mresult = new Mresult($stmt, true);
-		return $this;
+		return (new Mresult($stmt, true));
     }
-
-	public function save(array $map) {
-
-	}
 	
 	/**
 	 * 获取多条
@@ -103,7 +83,7 @@ class Orm
 	 * @param array $map
 	 * @return void
 	 */
-    public function find(string $table, array $map = []) {
+    public function find(string $table, array $map) {
 		$this->_setQuerySql($table, $map);
 		
 		if ( isset($map['limit']) && !empty($map['limit'])) {
@@ -127,16 +107,7 @@ class Orm
 
 		$stmt = $this->prepare($this->_sql);
 		$stmt->execute($map);
-		$this->lastInsertId =  $this->mpdo->lastInsertId();
-		return $this;
-	}
-	
-	public function lastInsertId() {
-		return $this->lastInsertId;
-	}
-
-	public function rowCount() {
-		return $this->rowCount;
+		return $this->mpdo->lastInsertId();
 	}
 
 	/**
@@ -157,8 +128,7 @@ class Orm
 
 		$stmt = $this->prepare($this->_sql);
 		$stmt->execute($bind);
-		$this->rowCount = $stmt->rowCount();
-		return $this;
+		return $stmt->rowCount();
 	}
 
 	// 组装 语句
