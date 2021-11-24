@@ -62,12 +62,13 @@ class Orm
         $this->_sql .= ' LIMIT 1 ';
 
         if ( empty($map['bind'])) {
-			$res = $this->query($this->_sql)->toArray();
-        } else {
-
-			$res = $this->prepareQuery($this->_sql, $map['bind'])->toArray();
-		}
-		return array_shift($res);
+			$stmt = $this->mpdo->query($this->_sql);
+			return (new Mresult($stmt, true));
+        }
+		// 预处理
+		$stmt = $this->prepare($this->_sql);
+		$stmt->execute($map['bind']);
+		return (new Mresult($stmt, true));
     }
 	
 	/**

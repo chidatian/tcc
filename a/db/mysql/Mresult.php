@@ -58,7 +58,9 @@ class Mresult implements \Iterator, \Countable, \ArrayAccess {
 	public function __construct($result, $isSingleRow = false)
 	{
         if ( $isSingleRow) {
-            $this->array = $result->fetch(PDO::FETCH_ASSOC);
+            if ( $row = $result->fetch(PDO::FETCH_ASSOC) ) {
+                $this->array = $row;
+            }
             // $result->closeCursor();
         }
 
